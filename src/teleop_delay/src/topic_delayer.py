@@ -11,9 +11,9 @@ class TopicDelayer:
         self.publisher = rospy.Publisher(topic_info.name + "_delayed", topic_info.type)
         self.subscriber = rospy.Subscriber(topic_info.name, topic_info.type, self.enqueue)
 
-    def enqueue(self, data):
+    def enqueue(self, message):
         try:
-            self.object_queue.put_nowait((data, rospy.get_time()))
+            self.object_queue.put_nowait((message, rospy.get_time()))
         except queue.Full:
             pass
         return
@@ -23,4 +23,4 @@ class TopicDelayer:
             data = self.object_queue.queue[0]
             if rospy.get_time() >= data[1] + delay_time_function.get_delay():
                 data = self.object_queue.get_nowait()[0]
-            self.publisher.publish(data)
+                self.publisher.publish(data)

@@ -7,6 +7,6 @@ rospy.init_node('test_publisher')
 rate = rospy.Rate(10)
 while not rospy.is_shutdown():
     header = Header()
-    header.stamp = rospy.get_time()
+    header.stamp = rospy.get_rostime()
     pub.publish(header)
     rate.sleep()
